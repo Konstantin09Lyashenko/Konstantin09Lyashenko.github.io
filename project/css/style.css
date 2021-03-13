@@ -1,0 +1,298 @@
+	/*Обнуление*/
+*{
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+*,*:before,*:after{
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+:focus,:active{outline: none;}
+a:focus,a:active{outline: none;}
+input,button,textarea{font-family:inherit;}
+
+input::-ms-clear{display: none;}
+button{cursor: pointer;}
+button::-moz-focus-inner {padding:0;border:0;}
+a, a:visited{text-decoration: none;}
+a:hover{text-decoration: none;}
+ul li{list-style: none;}
+img{vertical-align: top;}
+
+h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
+/*--------------------*/
+body{
+	font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+/*=========================================*/
+/*Первым делом займёмся главным грид-еонтейнером WRAPPER*/
+.wrapper {
+	min-height: 100%;
+	display: grid;
+	grid-template: minmax(100px, auto) 1fr minmax(70px, auto) / 1fr;
+	grid-template-areas: 
+								"header"
+								"main"
+								"footer";
+}
+.header {
+	grid-area: header;
+	background-color: #794f45;
+	padding: 15px;
+	display: grid;
+	grid-template: 1fr / 1fr minmax(auto, 300px) minmax(auto, 1100px) 1fr; /*Создаём ограничивающий контейнер 1400px 
+																									суммарно см. РИС - 1*/
+	align-items: center;
+}
+.header__logo img{
+	width: 70px;
+	height: 70px;
+	grid-column: 2/3;
+}
+.header__menu {
+	grid-column: 3/4;
+}
+.header__list {
+	/*Меню тоже строим по технологии grid */
+	display: grid;
+
+	grid-auto-flow: column; /*автоматическое заполнение по длине родительского элемента*/
+
+	justify-items: end; /*содержимое ячеек грид элемента выстроилось по правому краю*/
+ }
+ .header__list li{
+	margin-left: 30px;
+ }
+.header__link {
+	color:#fff;
+	font-size: 18px;
+}
+
+@media(max-width: 992px){
+	.header__list{
+		display: none;
+	}
+	.header__menu{
+		display: grid;
+		justify-items: end;
+	}
+	/*Имитируем меню Burger*/
+	.header__burger {
+		width: 30px;
+		align-items: center;
+		display: grid;
+		grid-template: repeat (3, 8px)/1fr;
+}
+	.header__burger::before{
+		content: "";
+		margin: 2px 0px;
+		height: 2px;
+		width: 30px;
+		background-color: #fff;
+	}
+	.header__burger::after{
+		content: "";
+		margin: 2px 0px;
+		height: 2px;
+		width: 30px;
+		background-color: #fff;
+	}
+	.header__burger span{
+		margin: 2px 0px;
+		height: 2px;
+		width: 30px;
+		background-color: #fff;
+	}
+}
+.main {
+	background-color: #323232;
+	/*grid-area: main;*/
+	padding: 30px 15px;
+
+	/*Так же создаем Grid контейнер */
+	/*display: grid;*/
+	/*и по примеру Header так же назначаем ограичивающий контейнер*/
+	/*grid-template: 1fr / 1fr minmax(auto, 300px) minmax(auto, 1100px) 1fr;*/
+}
+
+/*АДАПТИВНОСТЬ*/
+
+@media(min-width: 992px){
+	.main{
+		background-color: #323232;
+		grid-area: main;
+		display: grid;
+		grid-template: 1fr / 1fr minmax(auto, 300px) minmax(auto, 1100px) 1fr;
+	}
+	.sidebar{
+		grid-column: 2/3;
+		margin: 0;
+	}
+	.content{
+		grid-column: 3/4;
+		padding-left: 30px; 
+	}
+}
+
+.sidebar {
+	background-color: #7a956b;
+	padding: 30px 15px;
+}
+.sidebar__menu {}
+.sidebar__list {}
+.sidebar__list li{
+	margin-bottom: 15px;
+}
+.sidebar__link {
+	color: #fff;
+	font-size: 20px;
+}
+.content {
+	padding-left: 30px;
+}
+.content__title {
+	color: #fff;
+	font-size: 24px;
+	margin: 30px 0px;
+
+}
+.content__gallery {
+	margin-bottom: 30px;
+}
+.gallery {}
+.gallery__title {
+	color: #fff;
+	font-size: 24px;
+	margin: 30px 0px;
+}
+@media (min-width: 992px){
+	.gallery__title {
+	margin: 0px 0px 30px 0px;
+}
+}
+
+.gallery__items {
+	/*Так же присваиваем свойство Grid*/
+	display: grid;
+	gap: 10px;
+	/*Задаём  сетку*/
+	grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+}
+
+/*обращаемся к самим изображениям и делаем их адаптивными (то есть  позиционируем их правильно)*/
+
+.gallery__item{
+position: relative;
+padding-bottom: 85%;
+}
+.gallery__item img{
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+.gallery__item_big {
+	/*Условие занять большее количество ячеек
+	grid-column: span 2;
+	grid-row: span 2;*/
+}
+@media(min-width: 767px){
+	.gallery__item_big {
+		grid-column: span 2;
+		grid-row: span 2;
+	}
+}
+.content__products {}
+.products {
+	background-color: #323232;
+}
+.products__title {
+	color: #fff;
+	font-size: 24px;
+	margin: 30px 0px;
+}
+.product__items {
+	/*Строим сетку*/
+	display: grid;
+	/*Автоматическое выстраивание ячеек*/
+	grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+	column-gap: 30px; 
+	row-gap 50px;
+}
+.product__item {
+	/*Карточка товара делается тоже грид сеткой так как внутри изображение 
+	img является строчным а сприменением грид у родителя он станет блочным*/
+	display: grid;
+	/*Для выстраивания по строкам всех элементов внутри карточки товара*/
+	grid-auto-flow: row;
+	/*Обозначаем саму сетку карточки товара*/
+	grid-template: auto 1fr minmax(40px, auto) / 1fr;
+}
+.product__image {
+	position: relative;
+	padding-bottom: 90%;
+	margin-bottom: 20px;
+}
+
+/*Адаптируем изображения*/
+
+.product__image img{
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
+}
+
+.product__name {
+	font-size: 24px;
+	color: #fff;
+	line-height: 24px;
+	margin-bottom: 20px;
+}
+.products__button {
+	color: #fff;
+	text-transform: uppercase;
+	padding: 0px 20px;
+	background-color: #aeae;
+	border-radius: 5px;
+	text-align: center;
+	letter-spacing: 2px;
+	justify-self: start;
+	align-self: center;
+}
+.footer {
+	grid-area: footer;
+	background-color: #77608d;
+	padding: 15px;
+	display: grid;
+	/*и по примеру Header так же назначаем ограичивающий контейнер*/
+	grid-template: 1fr / 1fr minmax(auto, 300px) minmax(auto, 1100px) 1fr;
+	align-items: center;
+}
+
+@media(min-width: 550px){
+	.footer__copy {
+	grid-column: 2/3;
+}
+.footer__text {
+	text-align: right;
+	grid-column: 3/4;
+}
+}
+@media(max-width: 550px){
+	.footer{
+		grid-template: 1fr 1fr / 1fr;
+	}
+	.footer__copy {
+		order: 2;
+	}
+	.footer__text {
+		order: 1;
+	}
+}
